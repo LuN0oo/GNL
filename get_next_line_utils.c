@@ -6,17 +6,62 @@
 /*   By: analaphi <analaphi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 18:08:50 by analaphi          #+#    #+#             */
-/*   Updated: 2025/11/03 18:29:17 by analaphi         ###   ########.fr       */
+/*   Updated: 2025/11/04 12:17:20 by analaphi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	ft_is_charset(char c)
+size_t	ft_strlen(char *str)
 {
-	if (c == '\n' || c == '\0')
-		return (1);
-	return (0);
+	size_t	i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i])
+		i++;
+	return (i);
+}
+
+char	*ft_strchr(const char *str, int c)
+{
+	unsigned int	i;
+	char			cc;
+
+	i = 0;
+	cc = (char) c;
+	if (!str)
+		return (NULL);
+	while (str[i] != '\0')
+	{
+		if (str[i] == cc)
+			return ((char *) &str[i]);
+		i++;
+	}
+	if (str[i] == cc)
+		return ((char *) &str[i]);
+	return (NULL);
+}
+
+char	*ft_strdup(const char *src)
+{
+	char	*dest;
+	int		i;
+
+	i = 0;
+	if (!src)
+		return (NULL);
+	dest = malloc(sizeof(char) * (ft_strlen(src) + 1));
+	if (dest == NULL)
+		return (NULL);
+	while (src[i] != '\0')
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
 }
 
 char	*ft_strjoin(char const *s1, char const *s2)
@@ -39,4 +84,27 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		str[j++] = s2[i++];
 	str[j] = 0;
 	return (str);
+}
+
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	char	*sub;
+	size_t	i;
+
+	i = 0;
+	if (!s)
+		return (NULL);
+	if (start > ft_strlen(s))
+		return (ft_strdup(""));
+	if (len > ft_strlen(s + start))
+		len = ft_strlen(s + start);
+	sub = ft_calloc(len + 1, sizeof(char));
+	if (!sub)
+		return (NULL);
+	while (i < len)
+	{
+		sub[i] = s[start + i];
+		i++;
+	}
+	return (sub);
 }

@@ -6,7 +6,7 @@
 /*   By: analaphi <analaphi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 18:08:31 by analaphi          #+#    #+#             */
-/*   Updated: 2025/11/03 18:29:12 by analaphi         ###   ########.fr       */
+/*   Updated: 2025/11/04 12:17:54 by analaphi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,19 @@
 char	*read_line(int fd, char *s)
 {
 	static char	*stash;
-	char		*buf;
+	char		*rest;
+	char		buf[BUFFER_SIZE + 1];
 	int			i;
 
 	i = 0;
-	stash = malloc(sizeof(BUFFER_SIZE));
+	stash = malloc(BUFFER_SIZE + 1);
 	if (!stash)
 		return (NULL);
-	while (buf[i] && ft_is_charset(buf[i]))
+	while (s[i] && ft_strchr(s, '\n'))
 	{
 		read(fd, buf, BUFFER_SIZE);
-		i++;
 	}
+	stash = buf;
 	return (stash);
 }
 
@@ -40,9 +41,15 @@ char	*get_next_line(int fd)
 }
 
 #include <stdio.h>
+#include <fcntl.h>
 
 int	main(void)
 {
-	int	fd = "text.txt";
-	get_next_line(fd);
+	int	fd = open("text.txt", O_RDONLY);
+	printf("Line : %s\n", get_next_line(fd));
+	printf("Line : %s\n", get_next_line(fd));
+	printf("Line : %s\n", get_next_line(fd));
+	printf("Line : %s\n", get_next_line(fd));
+	printf("Line : %s\n", get_next_line(fd));
+	return (0);
 }
