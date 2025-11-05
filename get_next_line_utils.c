@@ -6,7 +6,7 @@
 /*   By: analaphi <analaphi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 18:08:50 by analaphi          #+#    #+#             */
-/*   Updated: 2025/11/04 12:17:20 by analaphi         ###   ########.fr       */
+/*   Updated: 2025/11/05 12:49:06 by analaphi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,27 +44,25 @@ char	*ft_strchr(const char *str, int c)
 	return (NULL);
 }
 
-char	*ft_strdup(const char *src)
+void	*ft_calloc(size_t count, size_t size)
 {
-	char	*dest;
-	int		i;
+	char	*tmp;
+	size_t	i;
 
 	i = 0;
-	if (!src)
+	if (count != 0 && count * size / count != size)
 		return (NULL);
-	dest = malloc(sizeof(char) * (ft_strlen(src) + 1));
-	if (dest == NULL)
+	if (!count || !size)
+		return (malloc(0));
+	tmp = malloc(count * size);
+	if (!tmp)
 		return (NULL);
-	while (src[i] != '\0')
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
+	while (i < count * size)
+		tmp[i++] = 0;
+	return (tmp);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	size_t	i;
 	size_t	j;
@@ -84,27 +82,4 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		str[j++] = s2[i++];
 	str[j] = 0;
 	return (str);
-}
-
-char	*ft_substr(char const *s, unsigned int start, size_t len)
-{
-	char	*sub;
-	size_t	i;
-
-	i = 0;
-	if (!s)
-		return (NULL);
-	if (start > ft_strlen(s))
-		return (ft_strdup(""));
-	if (len > ft_strlen(s + start))
-		len = ft_strlen(s + start);
-	sub = ft_calloc(len + 1, sizeof(char));
-	if (!sub)
-		return (NULL);
-	while (i < len)
-	{
-		sub[i] = s[start + i];
-		i++;
-	}
-	return (sub);
 }

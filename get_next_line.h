@@ -6,7 +6,7 @@
 /*   By: analaphi <analaphi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 18:09:12 by analaphi          #+#    #+#             */
-/*   Updated: 2025/11/04 12:19:58 by analaphi         ###   ########.fr       */
+/*   Updated: 2025/11/05 12:49:20 by analaphi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,14 @@
 #  define BUFFER_SIZE 5
 # endif
 
+char	*ft_free(char *res, char *buf);
+char	*find_line(char *buffer);
+char	*find_next_line(char *buffer);
+char	*read_file(int fd, char *res);
 char	*get_next_line(int ft);
 char	*ft_strchr(const char *str, int c);
-char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin(char *s1, char *s2);
 size_t	ft_strlen(char *str);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-char	*ft_strdup(const char *src);
+void	*ft_calloc(size_t count, size_t size);
 
 #endif
