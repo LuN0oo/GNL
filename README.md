@@ -1,2 +1,2 @@
 # GNL
-get_next_line ;P
+get_next_line :(((((((((((
