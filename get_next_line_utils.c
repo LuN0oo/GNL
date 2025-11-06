@@ -6,7 +6,7 @@
 /*   By: analaphi <analaphi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 18:08:50 by analaphi          #+#    #+#             */
-/*   Updated: 2025/11/05 12:49:06 by analaphi         ###   ########.fr       */
+/*   Updated: 2025/11/06 16:16:16 by analaphi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,6 @@ void	*ft_calloc(size_t count, size_t size)
 	i = 0;
 	if (count != 0 && count * size / count != size)
 		return (NULL);
-	if (!count || !size)
-		return (malloc(0));
 	tmp = malloc(count * size);
 	if (!tmp)
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: analaphi <analaphi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 18:08:31 by analaphi          #+#    #+#             */
-/*   Updated: 2025/11/06 14:20:41 by analaphi         ###   ########.fr       */
+/*   Updated: 2025/11/06 16:33:46 by analaphi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ char	*read_file(int fd, char *res)
 	while (bytes_read > 0)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read == -1)
+		if (bytes_read < 0)
 		{
 			free(res);
 			free(buffer);
@@ -104,11 +104,14 @@ char	*get_next_line(int fd)
 		return (NULL);
 	buffer = read_file(fd, buffer);
 	if (!buffer)
+		return (NULL);
+	line = find_line(buffer);
+	if (!line)
 	{
+		free(buffer);
 		buffer = NULL;
 		return (NULL);
 	}
-	line = find_line(buffer);
 	buffer = find_next_line(buffer);
 	return (line);
 }
@@ -119,20 +122,17 @@ char	*get_next_line(int fd)
 
 // int    main(void)
 // {
-//     char    *line;
 //     int        fd;
 // 	int	i;
 
 // 	i = 1;
 
 //     fd = open("text.txt", O_RDONLY);
-//     line = get_next_line(fd);
-//     while (line)
-//     {
-//         printf("Line %d : %s\n", i, line);
-//         free(line);
-//         line = get_next_line(fd);
-// 		i++;
-//     }
+//     printf("Line: %s\n", get_next_line(fd));
+//     printf("Line : %s\n", get_next_line(fd));
+//     printf("Line : %s\n", get_next_line(fd));
+//     printf("Line : %s\n", get_next_line(fd));
+//     printf("Line : %s\n", get_next_line(fd));
+//     printf("Line : %s\n", get_next_line(fd));
 //     close(fd);
 // }
