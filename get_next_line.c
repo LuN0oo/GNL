@@ -6,7 +6,7 @@
 /*   By: analaphi <analaphi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 18:08:31 by analaphi          #+#    #+#             */
-/*   Updated: 2025/11/05 15:38:29 by analaphi         ###   ########.fr       */
+/*   Updated: 2025/11/06 14:20:41 by analaphi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*ft_free(char *res, char *buf)
 
 	tmp = ft_strjoin(res, buf);
 	free(res);
+	if (!tmp)
+		return (NULL);
 	return (tmp);
 }
 
@@ -57,7 +59,7 @@ char	*find_next_line(char *buffer)
 		free(buffer);
 		return (NULL);
 	}
-	line = ft_calloc(ft_strlen(buffer) - i + 2, sizeof(char));
+	line = ft_calloc((ft_strlen(buffer) - i + 1), sizeof(char));
 	i++;
 	j = 0;
 	while (buffer[i])
@@ -78,9 +80,10 @@ char	*read_file(int fd, char *res)
 	while (bytes_read > 0)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read < 0)
+		if (bytes_read == -1)
 		{
 			free(res);
+			free(buffer);
 			return (NULL);
 		}
 		buffer[bytes_read] = 0;
@@ -97,11 +100,14 @@ char	*get_next_line(int fd)
 	static char	*buffer;
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 		return (NULL);
 	buffer = read_file(fd, buffer);
 	if (!buffer)
+	{
+		buffer = NULL;
 		return (NULL);
+	}
 	line = find_line(buffer);
 	buffer = find_next_line(buffer);
 	return (line);
