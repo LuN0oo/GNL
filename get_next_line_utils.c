@@ -6,7 +6,7 @@
 /*   By: analaphi <analaphi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 18:08:50 by analaphi          #+#    #+#             */
-/*   Updated: 2025/11/06 16:16:16 by analaphi         ###   ########.fr       */
+/*   Updated: 2025/11/06 17:28:47 by analaphi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,18 @@ char	*ft_strchr(const char *str, int c)
 
 void	*ft_calloc(size_t count, size_t size)
 {
+	size_t	total;
 	char	*tmp;
 	size_t	i;
 
 	i = 0;
-	if (count != 0 && count * size / count != size)
+	total = count * size;
+	if (count && total / count != size)
 		return (NULL);
-	tmp = malloc(count * size);
+	tmp = malloc(total);
 	if (!tmp)
 		return (NULL);
-	while (i < count * size)
+	while (i < total)
 		tmp[i++] = 0;
 	return (tmp);
 }

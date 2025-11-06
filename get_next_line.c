@@ -6,7 +6,7 @@
 /*   By: analaphi <analaphi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 18:08:31 by analaphi          #+#    #+#             */
-/*   Updated: 2025/11/06 16:33:46 by analaphi         ###   ########.fr       */
+/*   Updated: 2025/11/06 17:35:07 by analaphi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ char	*ft_free(char *res, char *buf)
 {
 	char	*tmp;
 
+	if (!res || !buf)
+		return (NULL);
 	tmp = ft_strjoin(res, buf);
 	free(res);
 	if (!tmp)
@@ -28,12 +30,14 @@ char	*find_line(char *buffer)
 	char	*line;
 	int		i;
 
-	i = 0;
-	if (!buffer[i])
+	if (!buffer || buffer[0] == '\0')
 		return (NULL);
+	i = 0;
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
 	line = ft_calloc(i + 2, sizeof(char));
+	if (!line)
+		return (NULL);
 	i = 0;
 	while (buffer[i] && buffer[i] != '\n')
 	{
@@ -51,6 +55,8 @@ char	*find_next_line(char *buffer)
 	int		j;
 	char	*line;
 
+	if (!buffer)
+		return (NULL);
 	i = 0;
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
@@ -77,7 +83,7 @@ char	*read_file(int fd, char *res)
 		res = ft_calloc(1, 1);
 	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	bytes_read = 1;
-	while (bytes_read > 0)
+	while (bytes_read > 0 && !ft_strchr(res, '\n'))
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read < 0)
@@ -88,8 +94,6 @@ char	*read_file(int fd, char *res)
 		}
 		buffer[bytes_read] = 0;
 		res = ft_free(res, buffer);
-		if (ft_strchr(res, '\n'))
-			break ;
 	}
 	free(buffer);
 	return (res);
@@ -100,39 +104,38 @@ char	*get_next_line(int fd)
 	static char	*buffer;
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	buffer = read_file(fd, buffer);
 	if (!buffer)
-		return (NULL);
-	line = find_line(buffer);
-	if (!line)
 	{
+		write(2, "buffer == NULL\n", 15);
+		return (NULL);
+	}
+	if (buffer[0] == '\0')
+	{
+		write(2, "buffer empty\n", 13);
 		free(buffer);
 		buffer = NULL;
 		return (NULL);
 	}
+	line = find_line(buffer);
 	buffer = find_next_line(buffer);
 	return (line);
 }
 
-// #include "get_next_line.h"
-// #include <stdio.h>
-// #include <fcntl.h>
+#include "get_next_line.h"
+#include <stdio.h>
+#include <fcntl.h>
 
-// int    main(void)
-// {
-//     int        fd;
-// 	int	i;
+int    main(void)
+{
+    int        fd;
+	int	i;
 
-// 	i = 1;
+	i = 1;
 
-//     fd = open("text.txt", O_RDONLY);
-//     printf("Line: %s\n", get_next_line(fd));
-//     printf("Line : %s\n", get_next_line(fd));
-//     printf("Line : %s\n", get_next_line(fd));
-//     printf("Line : %s\n", get_next_line(fd));
-//     printf("Line : %s\n", get_next_line(fd));
-//     printf("Line : %s\n", get_next_line(fd));
-//     close(fd);
-// }
+    fd = open("text.txt", O_RDONLY);
+    printf("Line: %s\n", get_next_line(fd));
+    close(fd);
+}
