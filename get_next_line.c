@@ -6,7 +6,7 @@
 /*   By: analaphi <analaphi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 18:08:31 by analaphi          #+#    #+#             */
-/*   Updated: 2025/11/06 17:35:07 by analaphi         ###   ########.fr       */
+/*   Updated: 2025/11/07 11:08:09 by analaphi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ char	*ft_free(char *res, char *buf)
 		return (NULL);
 	tmp = ft_strjoin(res, buf);
 	free(res);
-	if (!tmp)
-		return (NULL);
 	return (tmp);
 }
 
@@ -44,7 +42,7 @@ char	*find_line(char *buffer)
 		line[i] = buffer[i];
 		i++;
 	}
-	if (buffer[i] && buffer[i] == '\n')
+	if (buffer[i] == '\n')
 		line[i++] = '\n';
 	return (line);
 }
@@ -65,7 +63,7 @@ char	*find_next_line(char *buffer)
 		free(buffer);
 		return (NULL);
 	}
-	line = ft_calloc((ft_strlen(buffer) - i + 1), sizeof(char));
+	line = ft_calloc((ft_strlen(buffer) - i), sizeof(char));
 	i++;
 	j = 0;
 	while (buffer[i])
@@ -79,21 +77,25 @@ char	*read_file(int fd, char *res)
 	char	*buffer;
 	int		bytes_read;
 
+	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	if (!buffer)
+		return (NULL);
 	if (!res)
 		res = ft_calloc(1, 1);
-	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	bytes_read = 1;
 	while (bytes_read > 0 && !ft_strchr(res, '\n'))
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read < 0)
 		{
-			free(res);
 			free(buffer);
+			free(res);
 			return (NULL);
 		}
-		buffer[bytes_read] = 0;
+		buffer[bytes_read] = '\0';
 		res = ft_free(res, buffer);
+		if (!res)
+			break ;
 	}
 	free(buffer);
 	return (res);
@@ -103,18 +105,19 @@ char	*get_next_line(int fd)
 {
 	static char	*buffer;
 	char		*line;
+	char		*tmp;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	buffer = read_file(fd, buffer);
-	if (!buffer)
+	tmp = read_file(fd, buffer);
+	if (!tmp)
 	{
-		write(2, "buffer == NULL\n", 15);
+		buffer = NULL;
 		return (NULL);
 	}
+	buffer = tmp;
 	if (buffer[0] == '\0')
 	{
-		write(2, "buffer empty\n", 13);
 		free(buffer);
 		buffer = NULL;
 		return (NULL);
@@ -124,18 +127,20 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-#include "get_next_line.h"
-#include <stdio.h>
-#include <fcntl.h>
+// #include <stdio.h>
+// #include "get_next_line.h"
+// #include <fcntl.h>
 
-int    main(void)
-{
-    int        fd;
-	int	i;
+// int main(void)
+// {
+// 	int fd = open("text.txt", O_RDONLY);
+// 	char *line;
 
-	i = 1;
-
-    fd = open("text.txt", O_RDONLY);
-    printf("Line: %s\n", get_next_line(fd));
-    close(fd);
-}
+// 	while ((line = get_next_line(fd)) != NULL)
+// 	{
+// 		printf("Line: %s\n", line);
+// 		free(line);
+// 	}
+// 	close(fd);
+// 	return (0);
+// }
