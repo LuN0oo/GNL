@@ -6,13 +6,13 @@
 /*   By: analaphi <analaphi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 18:08:31 by analaphi          #+#    #+#             */
-/*   Updated: 2025/11/17 17:12:25 by analaphi         ###   ########.fr       */
+/*   Updated: 2025/11/17 17:13:06 by analaphi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-char	*ft_free(char *res, char *buf)
+static char	*ft_free(char *res, char *buf)
 {
 	char	*tmp;
 
@@ -23,7 +23,7 @@ char	*ft_free(char *res, char *buf)
 	return (tmp);
 }
 
-char	*find_line(char *buffer)
+static char	*find_line(char *buffer)
 {
 	char	*line;
 	int		i;
@@ -47,7 +47,7 @@ char	*find_line(char *buffer)
 	return (line);
 }
 
-char	*find_next_line(char *buffer)
+static char	*find_next_line(char *buffer)
 {
 	int		i;
 	int		j;
@@ -72,7 +72,7 @@ char	*find_next_line(char *buffer)
 	return (line);
 }
 
-char	*read_file(int fd, char *res)
+static char	*read_file(int fd, char *res)
 {
 	char	*buffer;
 	int		bytes_read;
