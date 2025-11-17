@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: analaphi <analaphi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 18:08:31 by analaphi          #+#    #+#             */
-/*   Updated: 2025/11/17 10:46:54 by analaphi         ###   ########.fr       */
+/*   Updated: 2025/11/17 17:09:28 by analaphi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_free(char *res, char *buf)
 {
@@ -103,26 +103,26 @@ char	*read_file(int fd, char *res)
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
+	static char	*buffer[1024];
 	char		*line;
 	char		*tmp;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	tmp = read_file(fd, buffer);
+	tmp = read_file(fd, buffer[fd]);
 	if (!tmp)
 	{
-		buffer = NULL;
+		buffer[fd] = NULL;
 		return (NULL);
 	}
-	buffer = tmp;
-	if (buffer[0] == '\0')
+	buffer[fd] = tmp;
+	if (buffer[fd] == 0)
 	{
-		free(buffer);
-		buffer = NULL;
+		free(buffer[fd]);
+		buffer[fd] = NULL;
 		return (NULL);
 	}
-	line = find_line(buffer);
-	buffer = find_next_line(buffer);
+	line = find_line(buffer[fd]);
+	buffer[fd] = find_next_line(buffer[fd]);
 	return (line);
 }
