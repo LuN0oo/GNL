@@ -6,7 +6,7 @@
 /*   By: analaphi <analaphi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 18:09:12 by analaphi          #+#    #+#             */
-/*   Updated: 2025/11/07 16:46:54 by analaphi         ###   ########.fr       */
+/*   Updated: 2025/11/17 10:33:01 by analaphi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE 
-#  define BUFFER_SIZE 1000
+#  define BUFFER_SIZE 42
 # endif
 
 char	*ft_free(char *res, char *buf);
